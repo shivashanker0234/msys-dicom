@@ -1,25 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Cookies from "js-cookie"; // Import js-cookie
 
-function App() {
+import LoginPage from "./components/Login/Login";
+import CreateAccountSlide from "./components/CreateAccount/CreateAccount";
+import Dashboard from "./components/Dashboard/Dashboard";
+import { upload } from "@testing-library/user-event/dist/upload";
+import AdminDashboard from "./components/AdminDashboard/AdminDashboard";
+
+const App = () => {
+  const [userType, setUserType] = useState(null);
+
+  // useEffect(() => {
+  //   const userToken = Cookies.get("userToken");
+
+  //   if (userToken) {
+  //     setUserType("authenticatedUser");
+  //   }
+  // }, []);
+
+  // const handleLogout = () => {
+  //   Cookies.remove("userToken");
+  //   setUserType(null);
+  // };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            userType === null ? (
+              <LoginPage setUserType={setUserType} />
+            ) : (
+              <Dashboard userType={userType} />
+            )
+          }
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          <Route index element={<CreateAccountSlide />} />
+        </Route>
+        {/* <Route path="/" element={<LoginPage/>}></Route> */}
+        {/* <Route path="/dashboard" exact element={<Dashboard/>}></Route> */}
+      </Routes>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
